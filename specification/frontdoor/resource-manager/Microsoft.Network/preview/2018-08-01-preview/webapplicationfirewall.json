@@ -159,6 +159,12 @@
               "$ref": "#/definitions/WebApplicationFirewallPolicy"
             }
           },
+          "202": {
+            "description": "Accepted. The request has been accepted for processing and the operation will complete asynchronously.",
+            "schema": {
+              "$ref": "#/definitions/WebApplicationFirewallPolicy"
+            }
+          },
           "default": {
             "description": "Error response describing why the operation failed.",
             "schema": {
@@ -381,6 +387,10 @@
         "priority": {
           "description": "Describes priority of the rule. Rules with a lower value will be evaluated before rules with a higher value.",
           "type": "integer"
+        },
+        "enabled": {
+          "description": "Describes whether the custom rule should be enabled.",
+          "type": "boolean"
         },
         "ruleType": {
           "description": "Describes type of rule.",
