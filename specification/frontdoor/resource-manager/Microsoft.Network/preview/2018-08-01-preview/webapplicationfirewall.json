@@ -447,14 +447,16 @@
         }
       }
     },
-    "MatchVariable": {
-      "description": "Match variable from the request.",
+    "MatchCondition": {
+      "description": "Define match conditions",
       "required": [
-        "matchVariableType"
+        "matchVariable",
+        "operator",
+        "matchValues"
       ],
       "properties": {
-        "matchVariableType": {
-          "description": "Match variable type.",
+        "matchVariable": {
+          "description": "Match variable to compare against.",
           "type": "string",
           "enum": [
             "RemoteAddr",
@@ -470,30 +472,13 @@
             "RequestBodyJson"
           ],
           "x-ms-enum": {
-            "name": "MatchVariableType",
+            "name": "MatchVariable",
             "modelAsString": true
           }
         },
         "selector": {
-          "description": "Selector can used to match a key for QueryString, PostArgs, RequestUri, RequestHeaders or RequestBody.",
+          "description": "Selector can used to match a specific key for QueryString, PostArgs, RequestUri, RequestHeaders or RequestBody.",
           "type": "string"
-        }
-      }
-    },
-    "MatchCondition": {
-      "description": "Define match conditions",
-      "required": [
-        "matchVariables",
-        "operator",
-        "matchValues"
-      ],
-      "properties": {
-        "matchVariables": {
-          "description": "List of match variables to compare against.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/MatchVariable"
-          }
         },
         "operator": {
           "description": "Describes operator to be matched",
