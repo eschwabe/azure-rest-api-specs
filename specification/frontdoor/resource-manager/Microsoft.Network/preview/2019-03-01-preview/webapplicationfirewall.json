@@ -217,35 +217,14 @@
         "x-ms-long-running-operation": true
       }
     },
-    "/subscriptions/{subscriptionId}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallManagedRuleSets": {
+    "/subscriptions/{subscriptionId}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallAvailableManagedRuleSets": {
       "get": {
         "tags": [
-          "WebApplicationFirewallManagedRuleSets"
+          "WebApplicationFirewallAvailableManagedRuleSets"
         ],
         "description": "Lists all available managed rule sets.",
         "operationId": "ManagedRuleSets_List",
         "parameters": [
-          {
-            "name": "ruleSetType",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "description": "Filter by target rule set type."
-          },
-          {
-            "name": "ruleSetVersion",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "description": "Filter by target rule set version."
-          },
-          {
-            "name": "provider",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "description": "Filter by target rule set provider."
-          },
           {
             "$ref": "./network.json#/parameters/SubscriptionIdParameter"
           },
@@ -255,7 +234,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK. The request has succeeded.",
+            "description": "Success. The operation returns a list of all available web application firewall managed rule sets.",
             "schema": {
               "$ref": "#/definitions/ManagedRuleSetDefinitionList"
             }
@@ -267,12 +246,9 @@
             }
           }
         },
-        "x-ms-pageable": {
-          "nextLinkName": "nextLink"
-        },
         "x-ms-examples": {
           "List Policies in a Resource Group": {
-            "$ref": "./examples/WafListManagedRuleSets.json"
+            "$ref": "./examples/WafListAvailableManagedRuleSets.json"
           }
         }
       }
@@ -318,7 +294,7 @@
           "type": "array",
           "readOnly": true,
           "items": {
-            "$ref": "#/definitions/FrontendEndpointLinkList"
+            "$ref": "#/definitions/FrontendEndpointLink"
           }
         },
         "provisioningState": {
@@ -360,7 +336,7 @@
             "Detection"
           ],
           "x-ms-enum": {
-            "name": "mode",
+            "name": "PolicyMode",
             "modelAsString": true
           }
         }
@@ -408,7 +384,7 @@
             "RateLimitRule"
           ],
           "x-ms-enum": {
-            "name": "ruleType",
+            "name": "RuleType",
             "modelAsString": true
           }
         },
@@ -428,39 +404,33 @@
           }
         },
         "action": {
-          "description": "Describes what action to be applied when rule matches",
+          "description": "Describes what action to be applied when rule matches.",
           "$ref": "#/definitions/Action"
         }
       }
     },
-    "Transform": {
-      "description": "Describes what transforms applied before matching",
-      "properties": {
-        "transformType": {
-          "description": "Describes transform type.",
-          "type": "string",
-          "enum": [
-            "Lowercase",
-            "Uppercase",
-            "Trim",
-            "UrlDecode",
-            "UrlEncode",
-            "RemoveNulls",
-            "HtmlEntityDecode"
-          ],
-          "x-ms-enum": {
-            "name": "transform",
-            "modelAsString": true
-          }
-        }
+    "TransformsEnum": {
+      "description": "Describes what transforms applied before matching.",
+      "type": "string",
+      "enum": [
+        "Lowercase",
+        "Uppercase",
+        "Trim",
+        "UrlDecode",
+        "UrlEncode",
+        "RemoveNulls"
+      ],
+      "x-ms-enum": {
+        "name": "Transform",
+        "modelAsString": true
       }
     },
     "MatchCondition": {
-      "description": "Define match conditions",
+      "description": "Define a match condition.",
       "required": [
         "matchVariable",
         "operator",
-        "matchValues"
+        "matchValue"
       ],
       "properties": {
         "matchVariable": {
@@ -472,12 +442,9 @@
             "QueryString",
             "PostArgs",
             "RequestUri",
-            "RequestHeaders",
+            "RequestHeader",
             "RequestBody",
-            "RequestUriOrBody",
-            "Cookies",
-            "RequestBodyXml",
-            "RequestBodyJson"
+            "Cookies"
           ],
           "x-ms-enum": {
             "name": "MatchVariable",
@@ -506,7 +473,7 @@
             "RegEx"
           ],
           "x-ms-enum": {
-            "name": "operator",
+            "name": "Operator",
             "modelAsString": true
           }
         },
@@ -514,7 +481,7 @@
           "description": "Describes if the result of this condition should be negated.",
           "type": "boolean"
         },
-        "matchValues": {
+        "matchValue": {
           "description": "List of possible match values.",
           "type": "array",
           "items": {
@@ -525,16 +492,16 @@
           "description": "List of transforms.",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Transform"
+            "$ref": "#/definitions/TransformsEnum"
           }
         }
       }
     },
     "ManagedRuleSetList": {
-      "description": "Defines a list of managed rule sets.",
+      "description": "Defines the list of managed rule sets for the policy.",
       "properties": {
         "ruleSets": {
-          "description": "List of rules",
+          "description": "List of rule sets.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/ManagedRuleSet"
@@ -550,10 +517,6 @@
         "ruleSetVersion"
       ],
       "properties": {
-        "priority": {
-          "description": "Describes priority order of the rule set. Rule sets with a lower value will be evaluated before rules with a higher value.",
-          "type": "integer"
-        },
         "ruleSetType": {
           "description": "Defines the rule set type to use.",
           "type": "string"
@@ -562,8 +525,27 @@
           "description": "Defines the version of the rule set to use.",
           "type": "string"
         },
-        "overrides": {
-          "description": "Defines the rule overrides to apply to the rule set.",
+        "ruleGroupOverrides": {
+          "description": "Defines the rule group overrides to apply to the rule set.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ManagedRuleGroupOverride"
+          }
+        }
+      }
+    },
+    "ManagedRuleGroupOverride": {
+      "description": "Defines a managed rule group override setting.",
+      "required": [
+        "ruleGroupName"
+      ],
+      "properties": {
+        "ruleGroupName": {
+          "description": "Describes the managed rule group to override.",
+          "type": "string"
+        },
+        "rules": {
+          "description": "List of rules that will be disabled. If none specified, all rules in the group will be disabled.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/ManagedRuleOverride"
@@ -572,17 +554,17 @@
       }
     },
     "ManagedRuleOverride": {
-      "description": "Defines a managed rule override setting.",
+      "description": "Defines a managed rule group override setting.",
       "required": [
-        "ruleName"
+        "ruleId"
       ],
       "properties": {
-        "ruleName": {
-          "description": "Describes the managed rule to override.",
+        "ruleId": {
+          "description": "Identifier for the managed rule.",
           "type": "string"
         },
         "enabled": {
-          "description": "Describes whether the managed rule should be enabled.",
+          "description": "Describes whether the managed rule should be enabled. Defaults to disabled.",
           "type": "boolean"
         },
         "action": {
@@ -592,7 +574,7 @@
       }
     },
     "ManagedRuleSetDefinitionList": {
-      "description": "Defines a list of managed rule set definitions.",
+      "description": "List of managed rule set definitions.",
       "properties": {
         "ruleSets": {
           "description": "List of managed rule set definitions.",
@@ -605,38 +587,75 @@
       }
     },
     "ManagedRuleSetDefinition": {
-      "description": "Defines a managed rule set definition.",
+      "description": "Describes the a managed rule set definition.",
       "properties": {
-        "ruleSetType": {
-          "description": "Defines the type of the managed rule set.",
+        "properties": {
+          "x-ms-client-flatten": true,
+          "$ref": "#/definitions/ManagedRuleSetDefinitionProperties"
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "./network.json#/definitions/Resource"
+        }
+      ]
+    },
+    "ManagedRuleSetDefinitionProperties": {
+      "description": "Properties for a managed rule set definition.",
+      "properties": {
+        "provisioningState": {
+          "type": "string",
           "readOnly": true,
-          "type": "string"
+          "description": "Provisioning state of the managed rule set."
+        },
+        "ruleSetType": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Type of the managed rule set."
         },
         "ruleSetVersion": {
-          "description": "Defines the version of the managed rule set.",
+          "type": "string",
           "readOnly": true,
-          "type": "string"
+          "description": "Version of the managed rule set type."
         },
-        "provider": {
-          "description": "Defines the provider of the managed rule set.",
-          "readOnly": true,
-          "type": "string"
-        },
-        "ruleDefinitions": {
-          "description": "Defines the provider of the managed rule set.",
-          "readOnly": true,
+        "ruleGroups": {
           "type": "array",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/ManagedRuleGroupDefinition"
+          },
+          "description": "Rule groups of the managed rule set."
+        }
+      }
+    },
+    "ManagedRuleGroupDefinition": {
+      "description": "Describes a managed rule group.",
+      "properties": {
+        "ruleGroupName": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Name of the managed rule group."
+        },
+        "description": {
+          "type": "string",
+          "readOnly": true,
+          "description": "Description of the managed rule group."
+        },
+        "rules": {
+          "type": "array",
+          "readOnly": true,
           "items": {
             "$ref": "#/definitions/ManagedRuleDefinition"
-          }
+          },
+          "description": "List of rules within the managed rule group."
         }
       }
     },
     "ManagedRuleDefinition": {
-      "description": "Defines a managed rule definition.",
+      "description": "Describes a managed rule definition.",
       "properties": {
-        "name": {
-          "description": "Defines the name of the managed rule.",
+        "ruleId": {
+          "description": "Identifier for the managed rule.",
           "readOnly": true,
           "type": "string"
         },
@@ -644,15 +663,6 @@
           "description": "Describes the functionality of the managed rule.",
           "readOnly": true,
           "type": "string"
-        },
-        "enabled": {
-          "description": "Describes if the rule is in enabled or disabled state by default.",
-          "type": "boolean"
-        },
-        "priority": {
-          "description": "Describes the priority of the managed rule. Rule sets with a lower value will be evaluated before rules with a higher value.",
-          "readOnly": true,
-          "type": "integer"
         }
       }
     },
@@ -672,7 +682,7 @@
             "Redirect"
           ],
           "x-ms-enum": {
-            "name": "action",
+            "name": "Action",
             "modelAsString": true
           }
         },
