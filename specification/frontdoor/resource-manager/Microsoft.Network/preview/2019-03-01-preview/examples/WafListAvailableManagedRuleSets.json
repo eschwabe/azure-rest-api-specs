@@ -1,0 +1,32 @@
+{
+    "parameters": {
+        "api-version": "2019-03-01",
+        "subscriptionId": "subid"
+    },
+    "responses": {
+        "200": {
+            "body": {
+                "name": "AzureManagedRuleSet_1.0",
+                "id": "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/Policy1",
+                "type": "Microsoft.Network/frontdoorwebapplicationfirewallpolicies",
+                "properties": {
+                    "provisioningState": "Succeeded",
+                    "ruleSetType": "AzureManaged",
+                    "ruleSetVersion": "preview-1.0",
+                    "ruleGroups": [
+                        {
+                            "ruleGroupName": "General",
+                            "description": "Description for general rule group.",
+                            "rules": [
+                                {
+                                    "ruleId": "GEN-0001",
+                                    "description": "Generic managed web application firewall rule."
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

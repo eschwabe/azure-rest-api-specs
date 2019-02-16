@@ -176,7 +176,8 @@
           "Creates specific policy": {
             "$ref": "./examples/WafPolicyCreateOrUpdate.json"
           }
-        }
+        },
+        "x-ms-long-running-operation": true
       },
       "delete": {
         "tags": [
@@ -245,6 +246,9 @@
               "$ref": "#/definitions/ErrorResponse"
             }
           }
+        },
+        "x-ms-pageable": {
+          "nextLinkName": "nextLink"
         },
         "x-ms-examples": {
           "List Policies in a Resource Group": {
@@ -574,15 +578,19 @@
       }
     },
     "ManagedRuleSetDefinitionList": {
-      "description": "List of managed rule set definitions.",
+      "description": "List of managed rule set definitions available to a policy.",
       "properties": {
-        "ruleSets": {
+        "value": {
           "description": "List of managed rule set definitions.",
           "readOnly": true,
           "type": "array",
           "items": {
             "$ref": "#/definitions/ManagedRuleSetDefinition"
           }
+        },
+        "nextLink": {
+          "type": "string",
+          "description": "URL to retrieve next set of managed rule set definitions."
         }
       }
     },
@@ -702,7 +710,7 @@
       }
     },
     "ErrorResponse": {
-      "description": "Error reponse indicates Front Door service is not able to process the incoming request. The reason is provided in the error message.",
+      "description": "Error response indicates Front Door service is not able to process the incoming request. The reason is provided in the error message.",
       "type": "object",
       "properties": {
         "code": {
@@ -736,7 +744,8 @@
       "required": true,
       "type": "string",
       "maxLength": 128,
-      "description": "The name of the WebApplicationFirewallPolicy."
+      "x-ms-parameter-location": "method",
+      "description": "The name of the Web Application Firewall Policy."
     },
     "ResourceGroupNameParameter": {
       "name": "resourceGroupName",
