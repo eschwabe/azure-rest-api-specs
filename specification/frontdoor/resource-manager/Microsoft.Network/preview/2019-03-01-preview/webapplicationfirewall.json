@@ -304,7 +304,24 @@
         "provisioningState": {
           "readOnly": true,
           "type": "string",
-          "description": "Provisioning state of the WebApplicationFirewallPolicy."
+          "description": "Provisioning state of the policy."
+        },
+        "resourceState": {
+          "title": "Resource status of the policy.",
+          "readOnly": true,
+          "enum": [
+            "Creating",
+            "Enabling",
+            "Enabled",
+            "Disabling",
+            "Disabled",
+            "Deleting"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "WebApplicationFirewallPolicy",
+            "modelAsString": true
+          }
         }
       }
     },
@@ -328,9 +345,17 @@
     "PolicySettings": {
       "description": "Defines top-level WebApplicationFirewallPolicy configuration settings.",
       "properties": {
-        "enabled": {
-          "description": "Describes if the policy is in enabled or disabled state.",
-          "type": "boolean"
+        "enabledState": {
+          "description": "Describes if the policy is in enabled or disabled state. Defaults to Enabled if not specified.",
+          "type": "string",
+          "enum": [
+            "Disabled",
+            "Enabled"
+          ],
+          "x-ms-enum": {
+            "name": "PolicyEnabledState",
+            "modelAsString": true
+          }
         },
         "mode": {
           "description": "Describes if it is in detection mode or prevention mode at policy level.",
@@ -376,9 +401,17 @@
           "description": "Describes priority of the rule. Rules with a lower value will be evaluated before rules with a higher value.",
           "type": "integer"
         },
-        "enabled": {
-          "description": "Describes whether the custom rule should be enabled.",
-          "type": "boolean"
+        "enabledState": {
+          "description": "Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not specified.",
+          "type": "string",
+          "enum": [
+            "Disabled",
+            "Enabled"
+          ],
+          "x-ms-enum": {
+            "name": "CustomRuleEnabledState",
+            "modelAsString": true
+          }
         },
         "ruleType": {
           "description": "Describes type of rule.",
@@ -456,7 +489,7 @@
           }
         },
         "selector": {
-          "description": "Selector can used to match a specific key for QueryString, PostArgs, RequestUri, RequestHeaders or RequestBody.",
+          "description": "Selector can used to match against a specific key from QueryString, PostArgs, RequestHeader or Cookies.",
           "type": "string"
         },
         "operator": {
@@ -504,7 +537,7 @@
     "ManagedRuleSetList": {
       "description": "Defines the list of managed rule sets for the policy.",
       "properties": {
-        "ruleSets": {
+        "managedRuleSets": {
           "description": "List of rule sets.",
           "type": "array",
           "items": {
@@ -567,9 +600,17 @@
           "description": "Identifier for the managed rule.",
           "type": "string"
         },
-        "enabled": {
-          "description": "Describes whether the managed rule should be enabled. Defaults to disabled.",
-          "type": "boolean"
+        "enabledState": {
+          "description": "Describes if the managed rule is in enabled or disabled state. Defaults to Disabled if not specified.",
+          "type": "string",
+          "enum": [
+            "Disabled",
+            "Enabled"
+          ],
+          "x-ms-enum": {
+            "name": "ManagedRuleEnabledState",
+            "modelAsString": true
+          }
         },
         "action": {
           "description": "Describes the override action to be applied when rule matches.",
