@@ -455,11 +455,11 @@
         },
         "action": {
           "description": "Describes what action to be applied when rule matches.",
-          "$ref": "#/definitions/Action"
+          "$ref": "#/definitions/ActionType"
         }
       }
     },
-    "TransformsEnum": {
+    "TransformType": {
       "description": "Describes what transforms applied before matching.",
       "type": "string",
       "enum": [
@@ -471,7 +471,7 @@
         "RemoveNulls"
       ],
       "x-ms-enum": {
-        "name": "Transform",
+        "name": "TransformType",
         "modelAsString": true
       }
     },
@@ -542,7 +542,7 @@
           "description": "List of transforms.",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/TransformsEnum"
+            "$ref": "#/definitions/TransformType"
           }
         }
       }
@@ -627,7 +627,7 @@
         },
         "action": {
           "description": "Describes the override action to be applied when rule matches.",
-          "$ref": "#/definitions/Action"
+          "$ref": "#/definitions/ActionType"
         }
       }
     },
@@ -728,26 +728,18 @@
         }
       }
     },
-    "Action": {
+    "ActionType": {
       "description": "Defines the action to take on rule match.",
-      "required": [
-        "actionType"
+      "type": "string",
+      "enum": [
+        "Allow",
+        "Block",
+        "Log",
+        "Redirect"
       ],
-      "properties": {
-        "actionType": {
-          "description": "Describes type of action.",
-          "type": "string",
-          "enum": [
-            "Allow",
-            "Block",
-            "Log",
-            "Redirect"
-          ],
-          "x-ms-enum": {
-            "name": "Action",
-            "modelAsString": true
-          }
-        },
+      "x-ms-enum": {
+        "name": "ActionType",
+        "modelAsString": true
       }
     },
     "ErrorResponse": {

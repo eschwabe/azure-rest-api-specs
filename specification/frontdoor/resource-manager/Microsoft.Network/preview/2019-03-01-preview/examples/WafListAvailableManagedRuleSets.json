@@ -6,26 +6,44 @@
     "responses": {
         "200": {
             "body": {
-                "name": "AzureManagedRuleSet_1.0",
-                "id": "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/Policy1",
-                "type": "Microsoft.Network/frontdoorwebapplicationfirewallpolicies",
-                "properties": {
-                    "provisioningState": "Succeeded",
-                    "ruleSetType": "AzureManaged",
-                    "ruleSetVersion": "preview-1.0",
-                    "ruleGroups": [
-                        {
-                            "ruleGroupName": "General",
-                            "description": "Description for general rule group.",
-                            "rules": [
+                "value": [
+                    {
+                        "name": "AzureManagedRuleSet_1.0",
+                        "id": "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/Policy1",
+                        "type": "Microsoft.Network/frontdoorwebapplicationfirewallpolicies",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "ruleSetType": "AzureManaged",
+                            "ruleSetVersion": "preview-1.0",
+                            "ruleGroups": [
                                 {
-                                    "ruleId": "GEN-0001",
-                                    "description": "Generic managed web application firewall rule."
+                                    "ruleGroupName": "Group1",
+                                    "description": "Description for rule group 1.",
+                                    "rules": [
+                                        {
+                                            "ruleId": "GROUP1-0001",
+                                            "description": "Generic managed web application firewall rule."
+                                        },
+                                        {
+                                            "ruleId": "GROUP1-0002",
+                                            "description": "Generic managed web application firewall rule."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "ruleGroupName": "Group2",
+                                    "description": "Description for rule group 2.",
+                                    "rules": [
+                                        {
+                                            "ruleId": "GROUP2-0001",
+                                            "description": "Generic managed web application firewall rule."
+                                        }
+                                    ]
                                 }
                             ]
                         }
-                    ]
-                }
+                    }
+                ]
             }
         }
     }
